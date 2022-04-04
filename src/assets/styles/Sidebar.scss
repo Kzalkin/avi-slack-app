@@ -1,0 +1,22 @@
+.sidebar-container {
+    padding: 10px;
+    width: 250px;
+    height: calc(100vh - 3rem);
+    background-color: coral;
+
+   .dropdown-container {
+        margin: 25px;
+
+       .dropdown-item-list {
+           display: flex;
+           flex-direction: column;
+           padding-left: 10px;
+
+           a {
+               margin: 5px;
+               text-decoration: none;
+               color: black;
+           }
+       }
+   }
+}
