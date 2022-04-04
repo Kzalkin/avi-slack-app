@@ -1,13 +1,13 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function SidebarDropdown() {
   return (
     <div className="dropdown-container">
       <h4>Channels</h4>
       <div className="dropdown-item-list">
-        <a href="#">Channel Test</a>
-        <a href="#">Channel Test1</a>
-        <a href="#">Channel Test2</a>
+        <Link to="/userpage/channel1">Channel 1</Link>
+        <Link to="/userpage/channel2">Channel 2</Link>
       </div>
     </div>
   );
