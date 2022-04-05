@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/Login.scss";
 import axios from "../api/axios";
+import useDataContext from "../hooks/useDataContext";
 
 function Login() {
+  const { getUser, getToken } = useDataContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [hasError, setHasError] = useState(false)
-  const [errorMessage, setErrorMessage] =useState('')
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const SIGN_IN_URL = "/auth/sign_in";
@@ -19,8 +21,8 @@ function Login() {
   };
 
   useEffect(() => {
-    setErrorMessage('')
-  }, [email, password])
+    setErrorMessage("");
+  }, [email, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,16 +32,18 @@ function Login() {
         SIGN_IN_URL,
         JSON.stringify({ email: email, password: password }),
         {
-          headers: {"Content-Type": "application/json"}
+          headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(resp.data);
+      getUser(resp.data.data);
+      getToken(resp.headers);
+      console.log(resp.headers)
       setLoggedIn(true);
       clearInputs();
       navigate("/userpage");
     } catch (error) {
-      setHasError(true)
-      setErrorMessage(error.response.data.errors)
+      setHasError(true);
+      setErrorMessage(error.response.data.errors);
     }
   };
 
@@ -47,7 +51,7 @@ function Login() {
     <section className="login-container">
       <h1>{loggedIn ? "Logged In" : "Log in"}</h1>
       <form className="login-form" onSubmit={handleSubmit}>
-      {hasError && <div>{errorMessage}</div>}
+        {hasError && <div>{errorMessage}</div>}
         <input
           className="input"
           type="email"

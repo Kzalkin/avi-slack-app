@@ -9,8 +9,8 @@ function Registration() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
   const [registered, setRegistered] = useState(false);
-  const [hasError, setHasError] = useState(false)
-  const [errorMessage, setErrorMessage] =useState('')
+  const [hasError, setHasError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const EMAIL_REG = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const PASS_REG = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -26,8 +26,8 @@ function Registration() {
   }, [confirmPassword]);
 
   useEffect(() => {
-    setErrorMessage('')
-  }, [email, password, confirmPassword])
+    setErrorMessage("");
+  }, [email, password, confirmPassword]);
 
   const clearInputs = () => {
     setEmail("");
@@ -42,7 +42,7 @@ function Registration() {
     }
 
     try {
-      const resp = await axios.post(
+      await axios.post(
         REG_URL,
         JSON.stringify({
           email: email,
@@ -53,11 +53,10 @@ function Registration() {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log(resp);
       setRegistered(true);
       clearInputs();
     } catch (error) {
-      setHasError(true)
+      setHasError(true);
       setErrorMessage(error.response.data.errors.full_messages);
     }
   };

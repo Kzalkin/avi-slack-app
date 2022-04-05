@@ -6,8 +6,12 @@ import Container from "./components/Container";
 import Home from "./pages/Home";
 import Userpage from "./pages/Userpage";
 import Channel from "./components/User page/Channel";
+import { useState } from "react";
+import useDataContext from "./hooks/useDataContext";
 
 function App() {
+  const {userChannels} = useDataContext()
+  // const [test1, setTest1] = useState(["user1", "user2", "user3"]);
   return (
     <Routes>
       <Route path="/" element={<Container />}>
@@ -17,8 +21,11 @@ function App() {
         <Route path="/register" element={<Registration />} />
         {/* private */}
         <Route path="/userpage" element={<Userpage />}>
-          <Route path="channel1" element={<Channel title={"Channel 1"} />} />
-          <Route path="channel2" element={<Channel title={"Channel 2"} />} />
+          { userChannels && userChannels.map((item) => {
+            return (
+              <Route path={`${item.name}`} key={item.id} element={<Channel title={item.name} />} />
+            );
+          })}
         </Route>
       </Route>
     </Routes>
