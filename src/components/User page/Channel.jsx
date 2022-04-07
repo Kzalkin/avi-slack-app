@@ -1,10 +1,13 @@
 import React from "react";
-import '../../assets/styles/Channel.scss'
+import "../../assets/styles/Channel.scss";
 
-function Channel({title}) {
+function Channel({ title }) {
   return (
     <section className="channel-container">
-      <h1>{title}</h1>
+      <header className="channel-header">
+        <h1>{title}</h1>
+        <span>Members</span>
+      </header>
     </section>
   );
 }

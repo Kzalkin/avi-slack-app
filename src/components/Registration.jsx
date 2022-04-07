@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../assets/styles/Registration.scss";
 import axios from "../api/axios";
+import { authRegister } from "../api/fetch";
 
 function Registration() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,6 @@ function Registration() {
 
   const EMAIL_REG = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const PASS_REG = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-  const REG_URL = "/auth";
 
   const t1 = EMAIL_REG.test(email);
   const t2 = PASS_REG.test(password);
@@ -40,24 +40,19 @@ function Registration() {
     if (!t1 || !t2) {
       return;
     }
+    const data = {
+      email: email,
+      password: password,
+      password_confirmation: confirmPassword,
+    };
 
-    try {
-      await axios.post(
-        REG_URL,
-        JSON.stringify({
-          email: email,
-          password: password,
-          password_confirmation: confirmPassword,
-        }),
-        {
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    const reg = await authRegister(data);
+    if (reg) {
+      setHasError(true);
+      setErrorMessage(reg);
+    } else {
       setRegistered(true);
       clearInputs();
-    } catch (error) {
-      setHasError(true);
-      setErrorMessage(error.response.data.errors.full_messages);
     }
   };
 

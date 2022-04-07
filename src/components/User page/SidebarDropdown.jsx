@@ -14,12 +14,11 @@ function SidebarDropdown({ title, data, onChannelAdd }) {
   return (
     <div className="dropdown-container">
       <div className="dropdown-title-container">
-        <span>{title}</span>{" "}
+        <span>{title}</span>
         <i className="fa-solid fa-plus" onClick={handleAddChannel} />
       </div>
       <div className="dropdown-item-list">
-        {data &&
-          data.map((item) => {
+        { data.map((item) => {
             if (!item.errors) {
               return (
                 <Link key={item.id} to={`${item.name}`} className="list-item">

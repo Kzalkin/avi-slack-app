@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "../../assets/styles/AddChannel.scss";
 import useDataContext from "../../hooks/useDataContext";
-import axios from "../../api/axios";
+import { fetchChannels, newChannel } from "../../api/fetch";
 
-function AddChannel({ onClose, onChannelAdd }) {
-  const { headerCreds, user } = useDataContext();
+function AddChannel({ onClose }) {
+  const { getChannels } = useDataContext();
+  const user = JSON.parse(localStorage.getItem("User"));
   const [name, setName] = useState("");
-  const CHANNELS_URL = "/channels";
 
   const handleClose = () => {
     onClose((prev) => !prev);
@@ -14,14 +14,15 @@ function AddChannel({ onClose, onChannelAdd }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(
-      CHANNELS_URL,
-      { name: name, user_ids: [user.id] },
-      {
-        headers: headerCreds(),
-      }
-    );
-    onChannelAdd();
+    const data = { name: name, user_ids: [user.id] };
+    const channel = await newChannel(data);
+    if (channel.errors) {
+      console.log(channel.errors[0]);
+    } else {
+      localStorage.setItem("Channels", JSON.stringify(await fetchChannels()));
+      getChannels(JSON.parse(localStorage.getItem("Channels")));
+      setName("");
+    }
   };
 
   return (
