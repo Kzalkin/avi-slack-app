@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../assets/styles/Registration.scss";
-import axios from "../api/axios";
 import { authRegister } from "../api/fetch";
 
 function Registration() {
@@ -47,6 +46,7 @@ function Registration() {
     };
 
     const reg = await authRegister(data);
+    console.log(reg)
     if (reg) {
       setHasError(true);
       setErrorMessage(reg);

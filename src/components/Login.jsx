@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../assets/styles/Login.scss";
-import axios from "../api/axios";
 import useDataContext from "../hooks/useDataContext";
-import headerToken from "../helpers/headerToken";
 import { authLogin, fetchChannels } from "../api/fetch";
 
 function Login() {
-  const { getChannels } = useDataContext();
+  const { getChannels, getMessageList } = useDataContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -21,6 +19,7 @@ function Login() {
   };
 
   useEffect(() => {
+    getMessageList([]);
     getChannels([]);
     localStorage.clear();
   }, []);
@@ -40,7 +39,11 @@ function Login() {
       localStorage.setItem("User", JSON.stringify(user));
       localStorage.setItem("Token", JSON.stringify(header));
       localStorage.setItem("Channels", JSON.stringify(await fetchChannels()));
-      getChannels(JSON.parse(localStorage.getItem("Channels")));
+      if (localStorage.getItem("Channels") === "undefined") {
+        getChannels([]);
+      } else {
+        getChannels(JSON.parse(localStorage.getItem("Channels")));
+      }
       setLoggedIn(true);
       clearInputs();
       navigate("/userpage");

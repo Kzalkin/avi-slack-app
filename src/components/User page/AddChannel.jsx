@@ -1,27 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/styles/AddChannel.scss";
 import useDataContext from "../../hooks/useDataContext";
-import { fetchChannels, newChannel } from "../../api/fetch";
+import { fetchChannels, getUsers, newChannel } from "../../api/fetch";
 
-function AddChannel({ onClose }) {
-  const { getChannels } = useDataContext();
+function AddChannel({ onClose, title }) {
+  const { getChannels, onNewSender, senderList } = useDataContext();
   const user = JSON.parse(localStorage.getItem("User"));
   const [name, setName] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [hasError, setHasError] = useState(false);
+  const isChannel = title === 'Channels';
+  // const [message, setMessage] = useState(null);
 
   const handleClose = () => {
     onClose((prev) => !prev);
   };
 
-  const handleSubmit = async (e) => {
+  const handleAddChannel = async (e) => {
     e.preventDefault();
     const data = { name: name, user_ids: [user.id] };
     const channel = await newChannel(data);
-    if (channel.errors) {
-      console.log(channel.errors[0]);
-    } else {
+    if (channel.data) {
       localStorage.setItem("Channels", JSON.stringify(await fetchChannels()));
       getChannels(JSON.parse(localStorage.getItem("Channels")));
       setName("");
+    } else {
+      setHasError(true);
+      setErrorMessage(channel.errors[0]);
+    }
+  };
+
+  const handleDirectMessage = async (e) => {
+    e.preventDefault();
+    const users = await getUsers();
+    const message = users ? users.find((item) => item.uid == name) : null;
+    if (message) {
+      localStorage.setItem("DirectMessage", JSON.stringify(message));
+      onNewSender(message);
+    } else {
+      setHasError(true)
+      setErrorMessage('No user found')
     }
   };
 
@@ -29,13 +47,15 @@ function AddChannel({ onClose }) {
     <div className="add-channel-modal">
       <i className="fa-solid fa-x" onClick={handleClose} />
       <h3>AddChannel</h3>
-      <form className="add-channel-form" onSubmit={handleSubmit}>
+      {hasError && <div>{errorMessage}</div>}
+      <form className="add-channel-form" onSubmit={isChannel? handleAddChannel: handleDirectMessage}>
         <input
           type="text"
           placeholder="Channel Name"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
+            setErrorMessage('');
           }}
         />
         <button>Create</button>

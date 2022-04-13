@@ -9,7 +9,9 @@ import Channel from "./components/User page/Channel";
 import useDataContext from "./hooks/useDataContext";
 
 function App() {
-  const { userChannels } = useDataContext();
+  const { userChannels, senderList } = useDataContext();
+  // const user = JSON.parse(localStorage.getItem("User"));
+
   return (
     <Routes>
       <Route path="/" element={<Container />}>
@@ -22,9 +24,22 @@ function App() {
           {userChannels.map((item) => {
             return (
               <Route
-                path={`${item.name}`}
+                path={`${item.id}`}
                 key={item.id}
-                element={<Channel title={item.name} />}
+                element={
+                  <Channel key={item.id} title={item.name} channel={item} />
+                }
+              />
+            );
+          })}
+          {senderList.map((item) => {
+            return (
+              <Route
+                path={`${item.id}`}
+                key={item.id}
+                element={
+                  <Channel key={item.id} title={item.email} channel={item} />
+                }
               />
             );
           })}
