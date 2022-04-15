@@ -1,23 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../../assets/styles/AddChannel.scss";
 import useDataContext from "../../hooks/useDataContext";
-import { fetchChannels, getUsers, newChannel } from "../../api/fetch";
+import {
+  addChannelMember,
+  fetchChannels,
+  getUsers,
+  newChannel,
+} from "../../api/fetch";
 
-function AddChannel({ onClose, title }) {
-  const { getChannels, onNewSender, senderList } = useDataContext();
+function AddChannel({ onClose, title, id }) {
+  const { getChannels, onNewSender } = useDataContext();
   const user = JSON.parse(localStorage.getItem("User"));
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
-  const isChannel = title === 'Channels';
-  // const [message, setMessage] = useState(null);
+  const isChannel = title === "Channels";
 
   const handleClose = () => {
     onClose((prev) => !prev);
   };
 
-  const handleAddChannel = async (e) => {
-    e.preventDefault();
+  const handleAddChannel = async () => {
     const data = { name: name, user_ids: [user.id] };
     const channel = await newChannel(data);
     if (channel.data) {
@@ -30,16 +33,40 @@ function AddChannel({ onClose, title }) {
     }
   };
 
-  const handleDirectMessage = async (e) => {
-    e.preventDefault();
+  const handleDirectMessage = async () => {
     const users = await getUsers();
     const message = users ? users.find((item) => item.uid == name) : null;
     if (message) {
       localStorage.setItem("DirectMessage", JSON.stringify(message));
       onNewSender(message);
     } else {
-      setHasError(true)
-      setErrorMessage('No user found')
+      setHasError(true);
+      setErrorMessage("No user found");
+    }
+  };
+
+  const handleAddMember = async () => {
+    const users = await getUsers();
+    const user = users ? users.find((item) => item.uid == name) : null;
+    const data = {
+      id: id,
+      member_id: user ? user.id : name,
+    };
+    const test = await addChannelMember(data);
+    if (test.data.errors) {
+      setHasError(true);
+      setErrorMessage(test.data.errors);
+    }
+  };
+
+  const determineHandler = async (e) => {
+    e.preventDefault();
+    if (title === "Channels") {
+      handleAddChannel();
+    } else if (title === "Direct messages") {
+      handleDirectMessage();
+    } else {
+      handleAddMember();
     }
   };
 
@@ -48,14 +75,14 @@ function AddChannel({ onClose, title }) {
       <i className="fa-solid fa-x" onClick={handleClose} />
       <h3>AddChannel</h3>
       {hasError && <div>{errorMessage}</div>}
-      <form className="add-channel-form" onSubmit={isChannel? handleAddChannel: handleDirectMessage}>
+      <form className="add-channel-form" onSubmit={determineHandler}>
         <input
           type="text"
           placeholder="Channel Name"
           value={name}
           onChange={(e) => {
             setName(e.target.value);
-            setErrorMessage('');
+            setErrorMessage("");
           }}
         />
         <button>Create</button>

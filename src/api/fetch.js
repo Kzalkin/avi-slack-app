@@ -6,6 +6,7 @@ const CHANNELS_URL = "/channels";
 const REG_URL = "/auth";
 const MESSAGES_URL = "/messages";
 const USERS_URL = "/users";
+const ADD_CHANNEL_MEMEBER_URL = "/channel/add_member";
 
 const fetchChannels = async () => {
   const resp = await axios.get(CHANNELS_URL, {
@@ -67,6 +68,13 @@ const getUsers = async () => {
   return resp.data.data;
 };
 
+const addChannelMember = async (data) => {
+  const resp = await axios.post(ADD_CHANNEL_MEMEBER_URL, data, {
+    headers: headerToken(),
+  });
+  return resp
+};
+
 export {
   fetchChannels,
   authLogin,
@@ -75,4 +83,5 @@ export {
   newChannelMessage,
   getChannelMessages,
   getUsers,
+  addChannelMember,
 };

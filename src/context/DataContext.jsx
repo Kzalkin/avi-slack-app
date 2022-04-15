@@ -4,9 +4,7 @@ const DataContext = createContext({});
 
 export const DataProvider = ({ children }) => {
   const [userChannels, setUserChannels] = useState([]);
-  const [messageList, setMessageList] = useState([]);
   const [senderList, setSenderList] = useState([]);
-  // const [isChannel, setIsChannel] = useState('')
 
   useEffect(() => {
     if (localStorage.getItem("Channels") === null) {
@@ -30,16 +28,12 @@ export const DataProvider = ({ children }) => {
   return (
     <DataContext.Provider
       value={{
-        // isChannel,
         senderList,
-        messageList,
         userChannels,
         onNewSender: addSender,
         getChannels: setUserChannels,
         resetSenderList: clearSenders,
-        getMessageList: setMessageList,
         getCleanSenderList: setSenderList,
-        // getChannelStatus: setIsChannel,
       }}
     >
       {children}

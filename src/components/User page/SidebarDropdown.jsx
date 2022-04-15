@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import AddChannel from "./AddChannel";
 import Modal from "../../helpers/Modal";
 
-function SidebarDropdown({ title, data, onChannelAdd }) {
+function SidebarDropdown({ title, data }) {
   const [addChannel, setAddChannel] = useState(false);
   const handleAddChannel = () => {
     setAddChannel((prev) => !prev);
@@ -29,7 +29,6 @@ function SidebarDropdown({ title, data, onChannelAdd }) {
       <Modal open={addChannel}>
         <AddChannel
           onClose={setAddChannel}
-          onChannelAdd={onChannelAdd}
           title={title}
         />
       </Modal>

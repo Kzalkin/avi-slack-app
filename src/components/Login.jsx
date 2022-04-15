@@ -5,7 +5,7 @@ import useDataContext from "../hooks/useDataContext";
 import { authLogin, fetchChannels } from "../api/fetch";
 
 function Login() {
-  const { getChannels, getMessageList } = useDataContext();
+  const { getChannels } = useDataContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
@@ -19,7 +19,6 @@ function Login() {
   };
 
   useEffect(() => {
-    getMessageList([]);
     getChannels([]);
     localStorage.clear();
   }, []);
