@@ -14,7 +14,6 @@ function AddChannel({ onClose, title, id }) {
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
-  const isChannel = title === "Channels";
 
   const handleClose = () => {
     onClose((prev) => !prev);
@@ -68,12 +67,13 @@ function AddChannel({ onClose, title, id }) {
     } else {
       handleAddMember();
     }
+    handleClose();
   };
 
   return (
     <div className="add-channel-modal">
-      <i className="fa-solid fa-x" onClick={handleClose} />
-      <h3>AddChannel</h3>
+      <i className="fa-solid fa-x icon" onClick={handleClose} />
+      <h3>Add Channel</h3>
       {hasError && <div>{errorMessage}</div>}
       <form className="add-channel-form" onSubmit={determineHandler}>
         <input

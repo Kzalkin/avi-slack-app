@@ -12,7 +12,10 @@ function SidebarDropdown({ title, data }) {
   return (
     <div className="dropdown-container">
       <div className="dropdown-title-container">
-        <span>{title}</span>
+        <div className="title">
+          <i className="fa-solid fa-caret-down" />
+          <span>{title}</span>
+        </div>
         <i className="fa-solid fa-plus" onClick={handleAddChannel} />
       </div>
       <div className="dropdown-item-list">
@@ -27,10 +30,7 @@ function SidebarDropdown({ title, data }) {
         })}
       </div>
       <Modal open={addChannel}>
-        <AddChannel
-          onClose={setAddChannel}
-          title={title}
-        />
+        <AddChannel onClose={setAddChannel} title={title} />
       </Modal>
     </div>
   );

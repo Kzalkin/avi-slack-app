@@ -1,21 +1,52 @@
 .sidebar-container {
-  padding: 10px;
-  width: 250px;
+  // padding: 10px;
+  width: 300px;
   height: calc(100vh - 3rem);
-  background-color: coral;
+  background-color: #3F0F3F;
+
+  .channel-title-container {
+    width: 100%;
+    border-bottom: solid 1px #611f69;
+    padding: 15px 5px ;
+    h3 {
+      margin-left: 10px;
+      color: white;
+    }
+  }
 
   .dropdown-container {
     margin: 25px;
+
+    .dropdown-title-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .title {
+        span {
+          margin-left: 15px;
+        }
+
+        span,
+        i {
+          color: white;
+        }
+      }
+
+      i {
+        color: white;
+      }
+    }
 
     .dropdown-item-list {
       display: flex;
       flex-direction: column;
       padding-left: 10px;
 
-      a {
+      .list-item {
         margin: 5px;
         text-decoration: none;
-        color: black;
+        color: white;
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getChannelMessages, newChannelMessage } from "../../api/fetch";
 import "../../assets/styles/Channel.scss";
 import groupArray from "../../helpers/groupArray";
@@ -11,8 +11,13 @@ function Channel({ title, channel }) {
   const { senderList, onNewSender, getCleanSenderList } = useDataContext();
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
-  const messageClass = channel["email"] ? true : false;
   const [addChannel, setAddChannel] = useState(false);
+  const messageClass = channel["email"] ? true : false;
+  const ref = useRef(null);
+
+  useEffect(()=>{
+    ref.current?.scrollIntoView()
+  }, [messageList])
 
   const handleAddChannel = () => {
     setAddChannel((prev) => !prev);
@@ -25,7 +30,7 @@ function Channel({ title, channel }) {
     };
     const fetchedData = await getChannelMessages(data);
     let groupedArray = fetchedData;
-    if (fetchedData !== undefined && messageClass) {
+    if (fetchedData.length > 0 && messageClass) {
       groupedArray = groupArray(
         fetchedData,
         senderList,
@@ -34,16 +39,12 @@ function Channel({ title, channel }) {
       );
     }
     localStorage.setItem("Messages", JSON.stringify(groupedArray));
-    if (localStorage.getItem("Messages") == "undefined") {
-      setMessageList([]);
-    } else {
-      setMessageList(JSON.parse(localStorage.getItem("Messages")));
-    }
+    setMessageList(JSON.parse(localStorage.getItem("Messages")));
   };
 
   useEffect(() => {
     getMessages();
-  }, [messageClass]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,8 +53,7 @@ function Channel({ title, channel }) {
       receiver_class: messageClass ? "User" : "Channel",
       body: message,
     };
-    const test = await newChannelMessage(data);
-    console.log(test);
+    await newChannelMessage(data);
     getMessages();
     setMessage("");
   };
@@ -61,7 +61,7 @@ function Channel({ title, channel }) {
   return (
     <section className="channel-container">
       <header className="channel-header">
-        <h1>{title}</h1>
+        <h3>{title}</h3>
         {!messageClass && <span onClick={handleAddChannel}>Members</span>}
       </header>
       <div className="message-container">
@@ -73,6 +73,7 @@ function Channel({ title, channel }) {
             : messageList[channel].map((item) => {
                 return <ChannelMessage key={item.id} data={item} />;
               })}
+          <div ref={ref}></div>
         </div>
         <form className="message-form" onSubmit={handleSubmit}>
           <textarea
@@ -80,9 +81,10 @@ function Channel({ title, channel }) {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            placeholder={`Message ${title}`}
           />
-          <button className="submit" type="submit">
-            Send
+          <button className="submit" type="submit" disabled={message? false : true}>
+            <i className="fa-solid fa-paper-plane" />
           </button>
         </form>
       </div>

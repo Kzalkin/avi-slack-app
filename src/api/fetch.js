@@ -45,10 +45,10 @@ const newChannel = async (data) => {
 };
 
 const newChannelMessage = async (data) => {
-  const resp = await axios.post(MESSAGES_URL, data, {
+  await axios.post(MESSAGES_URL, data, {
     headers: headerToken(),
   });
-  return resp;
+  console.log(data)
 };
 
 const getChannelMessages = async (data) => {
@@ -72,7 +72,7 @@ const addChannelMember = async (data) => {
   const resp = await axios.post(ADD_CHANNEL_MEMEBER_URL, data, {
     headers: headerToken(),
   });
-  return resp
+  return resp;
 };
 
 export {

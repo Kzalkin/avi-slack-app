@@ -6,26 +6,65 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #611f69;
+    
+    .text-header {
+        color: white;
+        font-size: 48px;
+    }
+
+    .error {
+        color: red;
+        position: absolute;
+        top: 37%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 
     .registration-form {
-        width: 250px;
-        height: 200px;
+        margin-top: 25px;
         display: flex;
         align-items: center;
         flex-direction: inherit;
 
         .input {
-            margin: 10px;
+            width: 500px;
+            height: 44px;
+            padding: 11px 12px;
+            margin: 15px 10px;
+            border-radius: 5px;
+            outline: none;
+            border: none;
+
+            &:focus::placeholder {
+                color: transparent;
+            }
+
+            &::placeholder{
+                color: black;
+                font-size: 15px;
+            }
         }
 
         button {
-            margin: 10px
+            width: 500px;
+            height: 44px;
+            padding: 11px 12px;
+            margin: 15px 10px;
+            border-radius: 5px;
+            outline: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
         }
 
     }
-    
-    .login-link {
-        text-decoration: none;
-        color: black;
+    .text-footer {
+        margin-top: 25px;
+        color: white;
+        .login-link {
+            margin-left: 5px;
+            color: white;
+        }
     }
 }

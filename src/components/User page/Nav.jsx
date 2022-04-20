@@ -5,6 +5,7 @@ import useDataContext from "../../hooks/useDataContext";
 
 function Nav() {
   const { getChannels, resetSenderList } = useDataContext();
+  const user = JSON.parse(localStorage.getItem("User"))
   const navigate = useNavigate();
 
   const logout = () => {
@@ -20,7 +21,7 @@ function Nav() {
         <input
           type="search"
           className="search"
-          placeholder={`Search 'channel-name'`}
+          placeholder={`Search ${user.email}`}
         />
       </div>
       <i className="fa-solid fa-circle-user" />

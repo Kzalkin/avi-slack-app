@@ -6,15 +6,23 @@
     justify-content: center;
     position: sticky;
     top: 0;
-    background-color: aqua;
+    background-color: #3F0F3F;
+    border-bottom: solid 1px #611f69;
 
     .center-nav {
         width: 90%;
         display: flex;
         justify-content: center;
         .search {
-            height: 1.5rem;
-            width: 500px;
+            padding: 0 5px;
+            height: 30px;
+            width: 600px;
+            border-radius: 5px;
+            outline: none;
+
+            &:focus::placeholder {
+                color: transparent;
+            }
         }
     }
 
@@ -22,9 +30,11 @@
         font-size: 25px;
         cursor: pointer;
         padding-right: 20px;
+        color: white;
     }
 
     .fa-right-from-bracket {
         cursor: pointer;
+        color: white;
     }
 }

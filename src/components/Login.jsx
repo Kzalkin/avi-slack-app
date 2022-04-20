@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/styles/Login.scss";
 import useDataContext from "../hooks/useDataContext";
 import { authLogin, fetchChannels } from "../api/fetch";
+import Logo from "./Logo";
 
 function Login() {
   const { getChannels } = useDataContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -37,13 +37,13 @@ function Login() {
     } else {
       localStorage.setItem("User", JSON.stringify(user));
       localStorage.setItem("Token", JSON.stringify(header));
-      localStorage.setItem("Channels", JSON.stringify(await fetchChannels()));
-      if (localStorage.getItem("Channels") === "undefined") {
+      const channels = await fetchChannels();
+      localStorage.setItem("Channels", JSON.stringify(channels));
+      if (channels === undefined) {
         getChannels([]);
       } else {
         getChannels(JSON.parse(localStorage.getItem("Channels")));
       }
-      setLoggedIn(true);
       clearInputs();
       navigate("/userpage");
     }
@@ -51,9 +51,10 @@ function Login() {
 
   return (
     <section className="login-container">
-      <h1>{loggedIn ? "Logged In" : "Log in"}</h1>
+      <Logo />
+      <h1 className="text-header">Sign in to Slack</h1>
       <form className="login-form" onSubmit={handleSubmit}>
-        {hasError && <div>{errorMessage}</div>}
+        {hasError && <div className="error">{errorMessage}</div>}
         <input
           className="input"
           type="email"
@@ -74,8 +75,11 @@ function Login() {
             setPassword(e.target.value);
           }}
         />
-        <button disabled={email && password ? false : true}>Log In</button>
+        <button disabled={email && password ? false : true}>Sign In</button>
       </form>
+      <span className="text-footer">New to Slack?
+        <Link className="link" to="/register">Create an account</Link>
+      </span>
     </section>
   );
 }

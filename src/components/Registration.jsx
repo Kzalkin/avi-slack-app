@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../assets/styles/Registration.scss";
 import { authRegister } from "../api/fetch";
+import Logo from "./Logo";
 
 function Registration() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
-  const [registered, setRegistered] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -19,10 +19,10 @@ function Registration() {
   const t2 = PASS_REG.test(password);
 
   useEffect(() => {
-    password === confirmPassword && t1
+    password === confirmPassword && t1 && t2 && password !== ""
       ? setPasswordMatch(true)
       : setPasswordMatch(false);
-  }, [confirmPassword]);
+  }, [confirmPassword, password, email]);
 
   useEffect(() => {
     setErrorMessage("");
@@ -46,21 +46,20 @@ function Registration() {
     };
 
     const reg = await authRegister(data);
-    console.log(reg)
     if (reg) {
       setHasError(true);
       setErrorMessage(reg);
     } else {
-      setRegistered(true);
       clearInputs();
     }
   };
 
   return (
     <section className="registration-container">
-      <h1>{registered ? "Success" : "Register"}</h1>
+      <Logo/>
+      <h1 className="text-header">Create an account</h1>
       <form className="registration-form" onSubmit={handleSubmit}>
-        {hasError && <div>{errorMessage}</div>}
+        {hasError && <div className="error">{errorMessage}</div>}
         <input
           className="input"
           type="email"
@@ -93,9 +92,11 @@ function Registration() {
         />
         <button disabled={email && passwordMatch ? false : true}>Submit</button>
       </form>
+      <span className="text-footer">Already have an account? 
       <Link className="login-link" to="/login">
-        Go to Log In
+        Sign in
       </Link>
+      </span>
     </section>
   );
 }

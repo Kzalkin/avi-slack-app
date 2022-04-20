@@ -7,7 +7,7 @@
   .channel-header {
     display: flex;
     width: 100%;
-    height: 3rem;
+    height: 56px;
     padding: 0 25px;
     align-items: center;
     justify-content: space-between;
@@ -16,37 +16,49 @@
 
   .message-container {
     .message-list {
-      height: 540px;
+      height: 557px;
       width: 100%;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      // justify-content: flex-end;
       align-items: center;
       .message {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 5px 50px;
+        padding: 5px 35px;
         width: 100%;
-        // height: 80px;
       }
     }
     .message-form {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 25px;
+      padding: 10px 0 22px 0;
 
       .message-input {
+        resize: none;
         width: 100%;
-        height: 80px;
+        height: 100px;
         max-width: 95%;
+        border-radius: 5px;
+        padding: 10px;
+        outline: none;
+
+        &:focus::placeholder {
+          color: transparent;
+        }
       }
 
       .submit {
-        width: 80px;
-        height: 25px;
+        position: absolute;
+        top: 95%;
+        left: 96.5%;
+        transform: translate(-50%,-50%);
+        border-radius: 50%;
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
       }
     }
   }
