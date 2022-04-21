@@ -48,7 +48,6 @@ const newChannelMessage = async (data) => {
   await axios.post(MESSAGES_URL, data, {
     headers: headerToken(),
   });
-  console.log(data)
 };
 
 const getChannelMessages = async (data) => {

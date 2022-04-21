@@ -42,6 +42,8 @@
       display: flex;
       flex-direction: column;
       padding-left: 10px;
+      overflow-y: auto;
+      height: 255px;
 
       .list-item {
         margin: 5px;

@@ -26,6 +26,7 @@ function AddChannel({ onClose, title, id }) {
       localStorage.setItem("Channels", JSON.stringify(await fetchChannels()));
       getChannels(JSON.parse(localStorage.getItem("Channels")));
       setName("");
+      handleClose();
     } else {
       setHasError(true);
       setErrorMessage(channel.errors[0]);
@@ -38,6 +39,7 @@ function AddChannel({ onClose, title, id }) {
     if (message) {
       localStorage.setItem("DirectMessage", JSON.stringify(message));
       onNewSender(message);
+      handleClose();
     } else {
       setHasError(true);
       setErrorMessage("No user found");
@@ -55,7 +57,9 @@ function AddChannel({ onClose, title, id }) {
     if (test.data.errors) {
       setHasError(true);
       setErrorMessage(test.data.errors);
+      return;
     }
+    handleClose();
   };
 
   const determineHandler = async (e) => {
@@ -67,26 +71,41 @@ function AddChannel({ onClose, title, id }) {
     } else {
       handleAddMember();
     }
-    handleClose();
+  };
+
+  const handleTitle = () => {
+    if (title === "Channels" || title === "Direct messages") {
+      return title.toLowerCase();
+    } else {
+      return `new member`;
+    }
   };
 
   return (
     <div className="add-channel-modal">
-      <i className="fa-solid fa-x icon" onClick={handleClose} />
-      <h3>Add Channel</h3>
-      {hasError && <div>{errorMessage}</div>}
-      <form className="add-channel-form" onSubmit={determineHandler}>
-        <input
-          type="text"
-          placeholder="Channel Name"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            setErrorMessage("");
-          }}
-        />
-        <button>Create</button>
-      </form>
+      <div className="modal-container">
+        <div className="close">
+          <i className="fa-solid fa-x icon" onClick={handleClose} />
+        </div>
+        <div className="modal-body">
+          <h3 className="text-header">{`Add ${handleTitle()}`}</h3>
+          {hasError && <div className="error">{errorMessage}</div>}
+          <form className="add-channel-form" onSubmit={determineHandler}>
+            <input
+              type={title === "Channels" ? "text" : "email"}
+              placeholder={
+                title === "Channels" ? "Channel name" : "Email address"
+              }
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setErrorMessage("");
+              }}
+            />
+            <button>Add</button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }

@@ -15,9 +15,9 @@ function Channel({ title, channel }) {
   const messageClass = channel["email"] ? true : false;
   const ref = useRef(null);
 
-  useEffect(()=>{
-    ref.current?.scrollIntoView()
-  }, [messageList])
+  useEffect(() => {
+    ref.current?.scrollIntoView();
+  }, [messageList]);
 
   const handleAddChannel = () => {
     setAddChannel((prev) => !prev);
@@ -46,8 +46,7 @@ function Channel({ title, channel }) {
     getMessages();
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const newMessage = async () => {
     const data = {
       receiver_id: channel.id,
       receiver_class: messageClass ? "User" : "Channel",
@@ -58,11 +57,23 @@ function Channel({ title, channel }) {
     setMessage("");
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    newMessage();
+  };
+
+  const handleKeyPress = async (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      newMessage();
+    }
+  };
+
   return (
     <section className="channel-container">
       <header className="channel-header">
         <h3>{title}</h3>
-        {!messageClass && <span onClick={handleAddChannel}>Members</span>}
+        {!messageClass && <span className="add-member-button" onClick={handleAddChannel}>Members</span>}
       </header>
       <div className="message-container">
         <div className="message-list">
@@ -82,8 +93,13 @@ function Channel({ title, channel }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder={`Message ${title}`}
+            onKeyDown={handleKeyPress}
           />
-          <button className="submit" type="submit" disabled={message? false : true}>
+          <button
+            className="submit"
+            type="submit"
+            disabled={message ? false : true}
+          >
             <i className="fa-solid fa-paper-plane" />
           </button>
         </form>
