@@ -1,4 +1,4 @@
-.add-channel-modal {
+.add-member-modal {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -13,10 +13,10 @@
   .modal-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
     width: 500px;
-    height: 300px;
+    height: 400px;
     background-color: #4a154b;
     border-radius: 5px;
 
@@ -24,34 +24,64 @@
       display: flex;
       justify-content: flex-end;
       width: 100%;
-      margin-right: 30px;
-      position: relative;
-      bottom: 50px;
+      padding: 10px;
+      margin: 10px 10px 0 0;
+      cursor: pointer;
 
       .icon {
         color: white;
-        cursor: pointer;
+      }
+    }
+
+    .member-list-container {
+      width: 80%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .member-list {
+        display: flex;
+        flex-direction: column;
+        height: 150px;
+        width: 80%;
+        margin-bottom: 50px;
+        overflow-y: auto;
+        .member-item {
+          text-align: center;
+          font-size: 16px;
+          font-weight: 500;
+          color: black;
+          background-color: white;
+          margin: 5px 0;
+          border-radius: 3px;
+          padding: 8.5px 0;
+          cursor: default;
+        }
+      }
+      .text-header {
+        width: 100%;
+        font-weight: 600;
+        color: white;
+        text-align: center;
+        font-size: 25px;
+        margin-bottom: 10px;
+        cursor: default;
       }
     }
 
     .modal-body {
       width: 100%;
-      .text-header {
-        position: relative;
-        bottom: 10px;
-        color: white;
-        text-align: center;
-        font-size: 25px;
-        cursor: default;
-      }
 
       .add-channel-form {
+        padding: 0 0 20px 0;
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin-top: -50px;
 
         input {
-          padding: 0 5px;
+          padding: 0 10px;
           height: 44px;
           width: 80%;
           border-radius: 5px;
@@ -76,6 +106,10 @@
       .error {
         color: red;
         text-align: center;
+        position: absolute;
+        top: 53.5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
     }
   }

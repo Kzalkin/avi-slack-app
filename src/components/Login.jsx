@@ -45,7 +45,7 @@ function Login() {
         getChannels(JSON.parse(localStorage.getItem("Channels")));
       }
       clearInputs();
-      navigate("/userpage");
+      navigate("/userpage/profile");
     }
   };
 

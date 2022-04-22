@@ -3,8 +3,8 @@ import React from "react";
 function ChannelMessage({data}) {
   return (
     <div className="message">
-      <h3>{data.sender.email}</h3>
-      <p>
+      <span className="sender">{data.sender.email}</span>
+      <p className="body">
         {data.body}
       </p>
     </div>

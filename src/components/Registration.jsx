@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 import "../assets/styles/Registration.scss";
 import { authRegister } from "../api/fetch";
 import Logo from "./Logo";
+import Modal from "../helpers/Modal";
+import Success from "./Success";
 
 function Registration() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMatch, setPasswordMatch] = useState(false);
-  const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const EMAIL_REG = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
   const PASS_REG = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -24,9 +26,13 @@ function Registration() {
       : setPasswordMatch(false);
   }, [confirmPassword, password, email]);
 
+  const setModal = () => {
+    setOpenModal(!openModal)
+  }
+
   useEffect(() => {
     setErrorMessage("");
-  }, [email, password, confirmPassword]);
+  }, [email, confirmPassword]);
 
   const clearInputs = () => {
     setEmail("");
@@ -36,6 +42,7 @@ function Registration() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMessage("");
     if (!t1 || !t2) {
       return;
     }
@@ -47,19 +54,19 @@ function Registration() {
 
     const reg = await authRegister(data);
     if (reg) {
-      setHasError(true);
       setErrorMessage(reg);
     } else {
+      setModal();
       clearInputs();
     }
   };
 
   return (
     <section className="registration-container">
-      <Logo/>
+      <Logo />
       <h1 className="text-header">Create an account</h1>
       <form className="registration-form" onSubmit={handleSubmit}>
-        {hasError && <div className="error">{errorMessage}</div>}
+        <div className="error">{errorMessage}</div>
         <input
           className="input"
           type="email"
@@ -78,6 +85,9 @@ function Registration() {
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
+            setErrorMessage(
+              "Password must 8 characters long with at least both upper and lowercase letter and a number"
+            );
           }}
         />
         <input
@@ -92,11 +102,15 @@ function Registration() {
         />
         <button disabled={email && passwordMatch ? false : true}>Submit</button>
       </form>
-      <span className="text-footer">Already have an account? 
-      <Link className="login-link" to="/login">
-        Sign in
-      </Link>
+      <span className="text-footer">
+        Already have an account?
+        <Link className="login-link" to="/login">
+          Sign in
+        </Link>
       </span>
+      <Modal open={openModal}>
+        <Success/>
+      </Modal>
     </section>
   );
 }

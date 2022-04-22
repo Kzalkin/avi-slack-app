@@ -6,18 +6,19 @@ import Container from "./components/Container";
 import Home from "./pages/Home";
 import Userpage from "./pages/Userpage";
 import Channel from "./components/User page/Channel";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Container />}>
-        {/* public */}
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Registration />} />
-        {/* private */}
+
         <Route path="userpage" element={<Userpage />}>
-          <Route path=":id" element={<Channel />}/>
+          <Route path="profile" element={<Profile />} />
+          <Route path=":id" element={<Channel />} />
         </Route>
       </Route>
     </Routes>

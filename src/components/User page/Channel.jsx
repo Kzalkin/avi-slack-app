@@ -4,7 +4,7 @@ import { getChannelMessages, newChannelMessage } from "../../api/fetch";
 import "../../assets/styles/Channel.scss";
 import determineChannel from "../../helpers/determineChannel";
 import Modal from "../../helpers/Modal";
-import AddChannel from "./AddChannel";
+import AddMember from "./AddMember";
 import ChannelMessage from "./ChannelMessage";
 import Loading from "./Loading";
 
@@ -20,7 +20,7 @@ function Channel() {
 
   useEffect(() => {
     ref.current?.scrollIntoView();
-  }, [messageList]);
+  }, [isLoading]);
 
   const handleAddChannel = () => {
     setAddChannel((prev) => !prev);
@@ -38,11 +38,11 @@ function Channel() {
   };
 
   useEffect(() => {
+    setMessageList([]);
+    setIsLoading(true);
     const interval = setInterval(() => {
       getMessages();
     }, 1000);
-    setMessageList([])
-    setIsLoading(true)
     return () => clearInterval(interval);
   }, [id]);
 
@@ -81,7 +81,10 @@ function Channel() {
       </header>
       <div className="message-container">
         <div className="message-list">
-          {isLoading && <Loading/>}
+          {isLoading && <Loading />}
+          {messageList.length === 0 && !isLoading && (
+            <div className="message-preview">Start a conversation!</div>
+          )}
           {messageList.map((item) => {
             return <ChannelMessage key={item.id} data={item} />;
           })}
@@ -106,7 +109,7 @@ function Channel() {
         </form>
       </div>
       <Modal open={addChannel}>
-        <AddChannel id={channel.id} onClose={setAddChannel} title={title} />
+        <AddMember id={channel.id} onClose={setAddChannel} channel={channel} />
       </Modal>
     </section>
   );

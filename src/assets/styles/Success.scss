@@ -1,0 +1,44 @@
+.success {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  .success-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    height: 200px;
+    width: 400px;
+    border-radius: 5px;
+
+    .message-container {
+      display: flex;
+      align-items: center;
+      .message {
+        font-size: 50px;
+        color: green;
+        margin: 20px;
+        font-weight: 700;
+      }
+      .icon {
+        font-size: 50px;
+        color: green;
+      }
+    }
+
+    .link {
+      color: black;
+      font-weight: 500;
+    }
+  }
+}

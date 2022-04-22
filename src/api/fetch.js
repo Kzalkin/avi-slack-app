@@ -58,7 +58,7 @@ const getChannelMessages = async (data) => {
     }
   );
   if (resp.data.data) {
-    return resp.data.data
+    return resp.data.data;
   } else {
     return [];
   }
@@ -78,6 +78,13 @@ const addChannelMember = async (data) => {
   return resp;
 };
 
+const getChannelDetails = async (data) => {
+  const resp = await axios.get(`/channels/${data}`, {
+    headers: headerToken(),
+  });
+  return resp.data.data['channel_members'];
+};
+
 export {
   fetchChannels,
   authLogin,
@@ -87,4 +94,5 @@ export {
   getChannelMessages,
   getUsers,
   addChannelMember,
+  getChannelDetails,
 };
