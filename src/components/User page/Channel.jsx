@@ -18,6 +18,8 @@ function Channel() {
   const [isLoading, setIsLoading] = useState(true);
   const ref = useRef(null);
 
+  const image = `https://avatars.dicebear.com/api/${messageClass?`micah`:`identicon`}/`;
+
   useEffect(() => {
     ref.current?.scrollIntoView();
   }, [isLoading]);
@@ -72,7 +74,10 @@ function Channel() {
   return (
     <section className="channel-container">
       <header className="channel-header">
-        <h3>{title}</h3>
+        <div className="channel-title">
+          <img src={`${image}baby-${channel.email ? channel.email : channel.name}.svg`} alt="" className="image" />
+          <h3 className="name">{title}</h3>
+        </div>
         {!messageClass && (
           <span className="add-member-button" onClick={handleAddChannel}>
             Members

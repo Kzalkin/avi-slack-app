@@ -8,6 +8,8 @@ function SidebarDropdown({ title, data }) {
   const handleAddChannel = () => {
     setAddChannel((prev) => !prev);
   };
+  const test = title === "Channels"
+  const image = `https://avatars.dicebear.com/api/${test?`identicon`:`micah`}/`;
 
   return (
     <div className="dropdown-container">
@@ -22,9 +24,12 @@ function SidebarDropdown({ title, data }) {
         {data.map((item) => {
           if (!item.errors) {
             return (
-              <Link key={item.id} to={`${item.id}`} className="list-item">
-                {item.email ? item.email : item.name}
-              </Link>
+              <div className="channel-item">
+                <img src={`${image}baby-${item.email ? item.email : item.name}.svg`} alt="" className="image"/>
+                <Link key={item.id} to={`${item.id}`} className="list-item">
+                  {item.email ? item.email : item.name}
+                </Link>
+              </div>
             );
           }
         })}

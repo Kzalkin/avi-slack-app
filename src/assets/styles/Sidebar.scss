@@ -2,12 +2,12 @@
   // padding: 10px;
   width: 300px;
   height: calc(100vh - 3rem);
-  background-color: #3F0F3F;
+  background-color: #3f0f3f;
 
   .channel-title-container {
     width: 100%;
     border-bottom: solid 1px #611f69;
-    padding: 15px 5px ;
+    padding: 15px 5px;
     h3 {
       margin-left: 10px;
       color: white;
@@ -34,7 +34,7 @@
           cursor: pointer;
         }
       }
-      
+
       i {
         cursor: pointer;
         color: white;
@@ -49,10 +49,20 @@
       height: auto;
       max-height: 200px;
 
-      .list-item {
-        margin: 5px;
-        text-decoration: none;
-        color: white;
+      .channel-item {
+        display: flex;
+        align-items: center;
+        .image {
+          width: 25px;
+          height: 25px;
+          margin-right: 10px;
+        }
+
+        .list-item {
+          margin: 5px;
+          text-decoration: none;
+          color: white;
+        }
       }
     }
   }

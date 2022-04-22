@@ -8,6 +8,8 @@ function Nav() {
   const user = JSON.parse(localStorage.getItem("User"))
   const navigate = useNavigate();
 
+  const image = "https://avatars.dicebear.com/api/micah/";
+
   const logout = () => {
     resetChannels();
     resetSenderList();
@@ -24,7 +26,7 @@ function Nav() {
           placeholder={`Search ${user.email}`}
         />
       </div>
-      <i className="fa-solid fa-circle-user" />
+      <img src={`${image}baby-${user.email}.svg`} alt="avatar" className="image"/>
       <i className="fa-solid fa-right-from-bracket" onClick={logout} />
     </nav>
   );
