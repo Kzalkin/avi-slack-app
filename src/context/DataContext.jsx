@@ -12,19 +12,26 @@ export const DataProvider = ({ children }) => {
     } else {
       setUserChannels(JSON.parse(localStorage.getItem("Channels")));
     }
+
     if (localStorage.getItem("DirectMessage") === null) {
       setSenderList([]);
     } else {
-      setSenderList([JSON.parse(localStorage.getItem("DirectMessage"))]);
+      setSenderList(JSON.parse(localStorage.getItem("DirectMessage")));
     }
   }, []);
 
   const addSender = (sender) => {
-    setSenderList((prev) => (prev === sender ? [...prev] : [...prev, sender]));
+    setSenderList(sender)
   };
+
   const clearSenders = () => {
     setSenderList([]);
   };
+
+  const clearChannels = () => {
+    setUserChannels([]);
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -32,8 +39,8 @@ export const DataProvider = ({ children }) => {
         userChannels,
         onNewSender: addSender,
         getChannels: setUserChannels,
+        resetChannels: clearChannels,
         resetSenderList: clearSenders,
-        getCleanSenderList: setSenderList,
       }}
     >
       {children}

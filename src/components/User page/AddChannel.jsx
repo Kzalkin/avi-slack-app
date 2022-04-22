@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/styles/AddChannel.scss";
 import useDataContext from "../../hooks/useDataContext";
 import {
@@ -7,13 +7,16 @@ import {
   getUsers,
   newChannel,
 } from "../../api/fetch";
+import { useNavigate } from "react-router-dom";
+import removeDuplicates from "../../helpers/removeDuplicates";
 
 function AddChannel({ onClose, title, id }) {
-  const { getChannels, onNewSender } = useDataContext();
+  const { getChannels, onNewSender, senderList } = useDataContext();
   const user = JSON.parse(localStorage.getItem("User"));
   const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hasError, setHasError] = useState(false);
+  const navigate = useNavigate()
 
   const handleClose = () => {
     onClose((prev) => !prev);
@@ -27,6 +30,7 @@ function AddChannel({ onClose, title, id }) {
       getChannels(JSON.parse(localStorage.getItem("Channels")));
       setName("");
       handleClose();
+      navigate(`/userpage/${channel.data.id}`)
     } else {
       setHasError(true);
       setErrorMessage(channel.errors[0]);
@@ -37,9 +41,12 @@ function AddChannel({ onClose, title, id }) {
     const users = await getUsers();
     const message = users ? users.find((item) => item.uid == name) : null;
     if (message) {
-      localStorage.setItem("DirectMessage", JSON.stringify(message));
-      onNewSender(message);
-      handleClose();
+      const list = [...senderList, message]
+      const newList = removeDuplicates(list, (item) => item.id)
+      onNewSender(newList);
+      localStorage.setItem('DirectMessage', JSON.stringify(newList))
+      handleClose()
+      navigate(`/userpage/${message.id}`)
     } else {
       setHasError(true);
       setErrorMessage("No user found");

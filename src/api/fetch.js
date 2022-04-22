@@ -57,7 +57,11 @@ const getChannelMessages = async (data) => {
       headers: headerToken(),
     }
   );
-  return resp.data.data;
+  if (resp.data.data) {
+    return resp.data.data
+  } else {
+    return [];
+  }
 };
 
 const getUsers = async () => {

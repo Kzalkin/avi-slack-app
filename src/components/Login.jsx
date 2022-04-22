@@ -6,7 +6,7 @@ import { authLogin, fetchChannels } from "../api/fetch";
 import Logo from "./Logo";
 
 function Login() {
-  const { getChannels } = useDataContext();
+  const { resetChannels, getChannels } = useDataContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -19,7 +19,7 @@ function Login() {
   };
 
   useEffect(() => {
-    getChannels([]);
+    resetChannels();
     localStorage.clear();
   }, []);
 
@@ -40,7 +40,7 @@ function Login() {
       const channels = await fetchChannels();
       localStorage.setItem("Channels", JSON.stringify(channels));
       if (channels === undefined) {
-        getChannels([]);
+        resetChannels();
       } else {
         getChannels(JSON.parse(localStorage.getItem("Channels")));
       }

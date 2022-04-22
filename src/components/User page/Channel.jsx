@@ -1,18 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { getChannelMessages, newChannelMessage } from "../../api/fetch";
 import "../../assets/styles/Channel.scss";
-import groupArray from "../../helpers/groupArray";
+import determineChannel from "../../helpers/determineChannel";
 import Modal from "../../helpers/Modal";
-import useDataContext from "../../hooks/useDataContext";
 import AddChannel from "./AddChannel";
 import ChannelMessage from "./ChannelMessage";
+import Loading from "./Loading";
 
-function Channel({ title, channel }) {
-  const { senderList, onNewSender, getCleanSenderList } = useDataContext();
+function Channel() {
+  const { id } = useParams();
+  const [channel, title] = determineChannel(id);
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
   const [addChannel, setAddChannel] = useState(false);
   const messageClass = channel["email"] ? true : false;
+  const [isLoading, setIsLoading] = useState(true);
   const ref = useRef(null);
 
   useEffect(() => {
@@ -29,22 +32,19 @@ function Channel({ title, channel }) {
       receiver_class: messageClass ? "User" : "Channel",
     };
     const fetchedData = await getChannelMessages(data);
-    let groupedArray = fetchedData;
-    if (fetchedData.length > 0 && messageClass) {
-      groupedArray = groupArray(
-        fetchedData,
-        senderList,
-        onNewSender,
-        getCleanSenderList
-      );
-    }
-    localStorage.setItem("Messages", JSON.stringify(groupedArray));
+    localStorage.setItem("Messages", JSON.stringify(fetchedData));
     setMessageList(JSON.parse(localStorage.getItem("Messages")));
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    getMessages();
-  }, []);
+    const interval = setInterval(() => {
+      getMessages();
+    }, 1000);
+    setMessageList([])
+    setIsLoading(true)
+    return () => clearInterval(interval);
+  }, [id]);
 
   const newMessage = async () => {
     const data = {
@@ -73,17 +73,18 @@ function Channel({ title, channel }) {
     <section className="channel-container">
       <header className="channel-header">
         <h3>{title}</h3>
-        {!messageClass && <span className="add-member-button" onClick={handleAddChannel}>Members</span>}
+        {!messageClass && (
+          <span className="add-member-button" onClick={handleAddChannel}>
+            Members
+          </span>
+        )}
       </header>
       <div className="message-container">
         <div className="message-list">
-          {!messageList[channel]
-            ? messageList.map((item) => {
-                return <ChannelMessage key={item.id} data={item} />;
-              })
-            : messageList[channel].map((item) => {
-                return <ChannelMessage key={item.id} data={item} />;
-              })}
+          {isLoading && <Loading/>}
+          {messageList.map((item) => {
+            return <ChannelMessage key={item.id} data={item} />;
+          })}
           <div ref={ref}></div>
         </div>
         <form className="message-form" onSubmit={handleSubmit}>
