@@ -7,13 +7,16 @@ function Sidebar() {
   const { userChannels, senderList } = useDataContext();
   const user = JSON.parse(localStorage.getItem("User"));
 
+  const image = "https://avatars.dicebear.com/api/micah/";
+
   return (
     <aside className="sidebar-container">
       <div className="channel-title-container">
-        <h3>{user.email}</h3>
+        <img src={`${image}baby-${user.email}.svg`} alt="avatar" className="image" />
+        <h3 className="title">{user.email}</h3>
       </div>
       <SidebarDropdown title={"Channels"} data={userChannels} />
-      <SidebarDropdown title={"Direct messages"} data={senderList}/>
+      <SidebarDropdown title={"Direct messages"} data={senderList} />
     </aside>
   );
 }

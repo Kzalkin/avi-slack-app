@@ -7,8 +7,15 @@
   .channel-title-container {
     width: 100%;
     border-bottom: solid 1px #611f69;
-    padding: 15px 5px;
-    h3 {
+    padding: 15px;
+    display: flex;
+
+    .image{
+      width: 25px;
+      height: 25px;
+    }
+
+    .title {
       margin-left: 10px;
       color: white;
     }
