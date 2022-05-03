@@ -22,7 +22,7 @@ function Channel() {
 
   useEffect(() => {
     ref.current?.scrollIntoView();
-  }, [isLoading]);
+  }, [isLoading, messageList]);
 
   const handleAddChannel = () => {
     setAddChannel((prev) => !prev);
