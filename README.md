@@ -7,17 +7,17 @@
 >> - Used local storage to retain data integrity on accidental refresh of the page.
 >> - Created API helpers for easier server communication using Axios.
 
-![Home Page](screenshots/home.png)
+![Home Page](src/assets/img/screenshots/home.png)
 
-![Log In Page](screenshots/login.png)
+![Log In Page](src/assets/img/screenshots/login.png)
 
-![Channel Page](screenshots/channel.png)
+![Channel Page](src/assets/img/screenshots/channel.png)
 
-![Direct Message Page](screenshots/dm.png) 
+![Direct Message Page](src/assets/img/screenshots/dm.png) 
 
-![Channel Members Page](screenshots/members.png)
+![Channel Members Page](src/assets/img/screenshots/members.png)
 
-![Add Channel Page](screenshots/addchannel.png)
+![Add Channel Page](src/assets/img/screenshots/addchannel.png)
 
 >> ###### Sources:
 >> - ReactJS [Documentation](https://reactjs.org/docs/getting-started.html)
