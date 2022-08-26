@@ -22,7 +22,12 @@ const authLogin = async (data) => {
     });
     return [resp.data.data, resp.headers];
   } catch (error) {
-    return [error.response.status, error.response.data.errors];
+    if (error.response) {
+      return [error.response.status, error.response.data.errors];
+    }
+    else {
+       return [ null, "Network Error"]
+    }
   }
 };
 
@@ -33,7 +38,12 @@ const authRegister = async (data) => {
     });
     return null;
   } catch (error) {
-    return error.response.data.errors.full_messages;
+    if (error.response) {
+      return error.response.data.errors.full_messages;
+    }
+    else {
+      return "Network Error"
+    }
   }
 };
 

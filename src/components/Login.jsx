@@ -31,7 +31,7 @@ function Login() {
     e.preventDefault();
     const data = { email: email, password: password };
     const [user, header] = await authLogin(data);
-    if (user === 401) {
+    if (user === 401 || user === null) {
       setHasError(true);
       setErrorMessage(header);
     } else {
